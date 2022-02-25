@@ -3,11 +3,12 @@ package electra.ztrix.model.game.common;
 import java.util.Objects;
 
 /**
- * A 2D Coordinate to represent positions, vectors, or sizes.
+ * An immutable object that represents positions, vectors, or sizes.
  *
  * @author Electra
  */
 public class Coordinate {
+    /** The 0, 0 Coordinate. */
     public static final Coordinate ORIGIN = new Coordinate( 0, 0 );
 
     /** The X component. */

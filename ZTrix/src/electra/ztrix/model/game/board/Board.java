@@ -3,7 +3,7 @@ package electra.ztrix.model.game.board;
 import java.util.LinkedList;
 import java.util.Queue;
 
-import electra.ztrix.model.game.action.Revertible;
+import electra.ztrix.model.game.action.Revertable;
 import electra.ztrix.model.game.common.Coordinate;
 import electra.ztrix.model.game.common.Rectangle;
 import electra.ztrix.model.game.common.Region;
@@ -14,8 +14,9 @@ import electra.ztrix.model.game.common.Region;
  * @author Electra
  */
 public class Board {
-
+    /** The Rectangle bounding box of the Board. */
     public final Rectangle bounds;
+    /** The matrix storing the grid of Minos. */
     private final Mino[][] matrix;
 
     /**
@@ -33,7 +34,7 @@ public class Board {
      * Gets the Mino at a particular position.
      *
      * @param pos
-     *            The position, non-null and within the Board's bounds
+     *            The position, non-null and within the Board's bounds.
      * @return The Mino at the position.
      */
     public Mino getMinoAt ( final Coordinate pos ) {
@@ -80,9 +81,9 @@ public class Board {
      *            The position, non-null and within the Board's bounds.
      * @param mino
      *            The Mino to set, non-null.
-     * @return The Reverible used to revert this method.
+     * @return The Revertable used to revert this method.
      */
-    public Revertible setMinoAt ( final Coordinate pos, final Mino mino ) {
+    public Revertable setMinoAt ( final Coordinate pos, final Mino mino ) {
         if ( mino == null ) {
             throw new NullPointerException( "setMinoAt(mino) must be non-null" );
         }
@@ -90,7 +91,7 @@ public class Board {
         final Mino prev = getMinoAt( pos );
         matrix[pos.y][pos.x] = mino;
 
-        return new Revertible() {
+        return new Revertable() {
             @Override
             public void revert () {
                 matrix[pos.y][pos.x] = prev;
@@ -105,9 +106,9 @@ public class Board {
      *            The Region to check, non-null and within the Board's bounds.
      * @param mino
      *            The Mino to set, non-null.
-     * @return The Reverible used to revert this method.
+     * @return The Revertable used to revert this method.
      */
-    public Revertible setRegion ( final Region region, final Mino mino ) {
+    public Revertable setRegion ( final Region region, final Mino mino ) {
         if ( region == null ) {
             throw new NullPointerException( "setRegion(region) must be non-null" );
         }
@@ -126,7 +127,7 @@ public class Board {
             matrix[pos.y][pos.x] = mino;
         }
 
-        return new Revertible() {
+        return new Revertable() {
             @Override
             public void revert () {
                 for ( final Coordinate pos : region ) {

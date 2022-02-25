@@ -1,7 +1,7 @@
 package electra.ztrix.model.game.common;
 
 /**
- * A Region defining a set of Coordinate positions.
+ * An immutable interface containing a set of Coordinate positions.
  *
  * @author Electra
  */

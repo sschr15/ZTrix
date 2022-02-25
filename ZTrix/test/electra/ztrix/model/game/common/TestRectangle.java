@@ -118,10 +118,10 @@ public class TestRectangle {
     }
 
     /**
-     * Tests that contains() cannot be called with an invalid position.
+     * Tests that contains() cannot be called with a null position.
      */
     @Test
-    public void testRectangleContainsInvalid () {
+    public void testRectangleContainsNull () {
         assertThrows( NullPointerException.class,
                 () -> RECTANGLE.contains( null ),
                 "contains(null) did not throw an Exception." );
@@ -144,10 +144,10 @@ public class TestRectangle {
     }
 
     /**
-     * Tests that containsRegion() cannot be called with an invalid Region.
+     * Tests that containsRegion() cannot be called with a null Region.
      */
     @Test
-    public void testRectangleContainsRegionInvalid () {
+    public void testRectangleContainsRegionNull () {
         assertThrows( NullPointerException.class,
                 () -> RECTANGLE.containsRegion( null ),
                 "containsRegion(null) did not throw an Exception." );

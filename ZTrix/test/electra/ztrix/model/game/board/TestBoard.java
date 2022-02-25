@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import electra.ztrix.model.game.action.Revertible;
+import electra.ztrix.model.game.action.Revertable;
 import electra.ztrix.model.game.common.Coordinate;
 import electra.ztrix.model.game.common.Rectangle;
 import electra.ztrix.model.game.common.Region;
@@ -209,7 +209,7 @@ class TestBoard {
     @Test
     public void testBoardSetMinoAt () {
         for ( final Coordinate pos : VALID_POSITIONS ) {
-            final Revertible revertible = board.setMinoAt( pos, MINO );
+            final Revertable revertable = board.setMinoAt( pos, MINO );
             final Mino mino = board.getMinoAt( pos );
             assertEquals( MINO, mino,
                     "setMinoAt(" + pos + ", MINO) did not set the position." );
@@ -218,7 +218,7 @@ class TestBoard {
             assertNull( other,
                     "setMinoAt(" + pos + ", MINO) affected another position." );
 
-            revertible.revert();
+            revertable.revert();
             final Mino reverted = board.getMinoAt( pos );
             assertNull( reverted,
                     "setMinoAt().revert() did not revert the position." );
@@ -250,7 +250,7 @@ class TestBoard {
     @Test
     public void testBoardSetRegion () {
         for ( final Region region : VALID_REGIONS ) {
-            final Revertible revertible = board.setRegion( region, MINO );
+            final Revertable revertable = board.setRegion( region, MINO );
             for ( final Coordinate pos : region ) {
                 final Mino mino = board.getMinoAt( pos );
                 assertEquals( MINO, mino,
@@ -261,7 +261,7 @@ class TestBoard {
             assertNull( other,
                     "setRegion(" + region + ", MINO) affected another position." );
 
-            revertible.revert();
+            revertable.revert();
             for ( final Coordinate pos : region ) {
                 final Mino reverted = board.getMinoAt( pos );
                 assertNull( reverted,

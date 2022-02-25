@@ -65,7 +65,7 @@ public class Rectangle implements Region {
     }
 
     /**
-     * Checks whether the Region contains a position.
+     * Checks whether the Rectangle contains a position.
      *
      * @param pos
      *            The position to check, non-null.
@@ -91,11 +91,11 @@ public class Rectangle implements Region {
     }
 
     /**
-     * Checks whether the Region contains a region.
+     * Checks whether the Rectangle contains a Region.
      *
      * @param region
-     *            The region to check, non-null.
-     * @return True if the Rectangle contains the region.
+     *            The Region to check, non-null.
+     * @return True if the Rectangle contains the Region.
      */
     public boolean containsRegion ( final Region region ) {
         if ( region == null ) {

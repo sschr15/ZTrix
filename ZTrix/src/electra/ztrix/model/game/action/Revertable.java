@@ -5,7 +5,7 @@ package electra.ztrix.model.game.action;
  *
  * @author Electra
  */
-public interface Revertible {
+public interface Revertable {
     /**
      * Reverts the effects of the method the Revertible is returned from.
      */
