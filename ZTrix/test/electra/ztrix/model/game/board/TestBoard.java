@@ -112,10 +112,11 @@ class TestBoard {
      */
     @Test
     public void testBoardConstructorInvalid () {
+        // Check the NullPointerException.
         assertThrows( NullPointerException.class,
                 () -> new Board( null ),
                 "Board(null) did not throw an Exception." );
-
+        // Check IllegalArgumentExceptions for various invalid sizes.
         for ( final Coordinate size : INVALID_SIZES ) {
             assertThrows( IllegalArgumentException.class,
                     () -> new Board( size ),
@@ -128,6 +129,7 @@ class TestBoard {
      */
     @Test
     public void testBoardBounds () {
+        // Check the bounds of Boards with various sizes.
         for ( final Coordinate size : VALID_SIZES ) {
             final Board board = new Board( size );
             final Rectangle bounds = board.bounds;
@@ -143,6 +145,7 @@ class TestBoard {
      */
     @Test
     public void testBoardInitialization () {
+        // Check that various positions on the Board are initialized to null.
         for ( final Coordinate pos : VALID_POSITIONS ) {
             final Mino mino = board.getMinoAt( pos );
             assertNull( mino,
@@ -155,10 +158,11 @@ class TestBoard {
      */
     @Test
     public void testBoardGetMinoAtInvalid () {
+        // Check the NullPointerException.
         assertThrows( NullPointerException.class,
                 () -> board.getMinoAt( null ),
                 "getMinoAt(null) did not throw an Exception." );
-
+        // Check IndexOutOfBoundsExceptions for various invalid positions.
         for ( final Coordinate pos : INVALID_POSITIONS ) {
             assertThrows( IndexOutOfBoundsException.class,
                     () -> board.getMinoAt( pos ),
@@ -171,22 +175,23 @@ class TestBoard {
      */
     @Test
     public void testBoardIsRegionEmpty () {
-
+        // Check isRegionEmpty() for various Regions outside the Board.
         for ( final Region region : INVALID_REGIONS ) {
             assertFalse( board.isRegionEmpty( region ),
                     "isRegionEmpty(" + region + ") did not return False." );
         }
-
+        // Set a Mino at a position not contained within the tested Regions.
         board.setMinoAt( OTHER_POSITION, MINO );
+        // Check isRegionEmpty() for various Regions inside the Board.
         for ( final Region region : VALID_REGIONS ) {
             assertTrue( board.isRegionEmpty( region ),
                     "isRegionEmpty(" + region + ") did not return True." );
         }
-
+        // Set Minos at positions contained within the tested Regions.
         for ( final Coordinate pos : VALID_POSITIONS ) {
             board.setMinoAt( pos, MINO );
         }
-
+        // Check isRegionEmpty() for various Regions inside the Board.
         for ( final Region region : VALID_REGIONS ) {
             assertFalse( board.isRegionEmpty( region ),
                     "isRegionEmpty(" + region + ") did not return False." );
@@ -198,6 +203,7 @@ class TestBoard {
      */
     @Test
     public void testIsRegionEmptyNull () {
+        // Check the NullPointerException.
         assertThrows( NullPointerException.class,
                 () -> board.isRegionEmpty( null ),
                 "isRegionEmpty(null) did not throw an Exception." );
@@ -208,16 +214,16 @@ class TestBoard {
      */
     @Test
     public void testBoardSetMinoAt () {
+        // Check setMinoAt() for various positions inside the Board.
         for ( final Coordinate pos : VALID_POSITIONS ) {
             final Revertable revertable = board.setMinoAt( pos, MINO );
             final Mino mino = board.getMinoAt( pos );
             assertEquals( MINO, mino,
                     "setMinoAt(" + pos + ", MINO) did not set the position." );
-
             final Mino other = board.getMinoAt( OTHER_POSITION );
             assertNull( other,
                     "setMinoAt(" + pos + ", MINO) affected another position." );
-
+            // Check that the method is Revertable.
             revertable.revert();
             final Mino reverted = board.getMinoAt( pos );
             assertNull( reverted,
@@ -230,13 +236,14 @@ class TestBoard {
      */
     @Test
     public void testBoardSetMinoAtInvalid () {
+        // Check NullPointerExceptions.
         assertThrows( NullPointerException.class,
                 () -> board.setMinoAt( null, MINO ),
                 "setMinoAt(null, MINO) did not throw an Exception." );
         assertThrows( NullPointerException.class,
                 () -> board.setMinoAt( OTHER_POSITION, null ),
                 "setMinoAt(" + OTHER_POSITION + ", null) did not throw an Exception." );
-
+        // Check IndexOutOfBoundsExceptions for various invalid Positions.
         for ( final Coordinate pos : INVALID_POSITIONS ) {
             assertThrows( IndexOutOfBoundsException.class,
                     () -> board.setMinoAt( pos, MINO ),
@@ -249,6 +256,7 @@ class TestBoard {
      */
     @Test
     public void testBoardSetRegion () {
+        // Check setRegion() for various Regions inside the Board.
         for ( final Region region : VALID_REGIONS ) {
             final Revertable revertable = board.setRegion( region, MINO );
             for ( final Coordinate pos : region ) {
@@ -256,11 +264,10 @@ class TestBoard {
                 assertEquals( MINO, mino,
                         "setRegion(" + region + ", MINO) did not set the position " + pos + "." );
             }
-
             final Mino other = board.getMinoAt( OTHER_POSITION );
             assertNull( other,
                     "setRegion(" + region + ", MINO) affected another position." );
-
+            // Check that the method is Revertable.
             revertable.revert();
             for ( final Coordinate pos : region ) {
                 final Mino reverted = board.getMinoAt( pos );
@@ -275,13 +282,14 @@ class TestBoard {
      */
     @Test
     public void testBoardSetRegionInvalid () {
+        // Check NullPointerExceptions.
         assertThrows( NullPointerException.class,
                 () -> board.setRegion( null, MINO ),
                 "setMinoAt(null, MINO) did not throw an Exception." );
         assertThrows( NullPointerException.class,
                 () -> board.setRegion( board.bounds, null ),
                 "setMinoAt(" + board.bounds + ", null) did not throw an Exception." );
-
+        // Check IndexOutOfBoundsExceptions for various invalid Regions.
         for ( final Region region : INVALID_REGIONS ) {
             assertThrows( IndexOutOfBoundsException.class,
                     () -> board.setRegion( region, MINO ),

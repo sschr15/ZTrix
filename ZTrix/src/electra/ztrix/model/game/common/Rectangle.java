@@ -27,10 +27,10 @@ public class Rectangle implements Region {
      */
     public Rectangle ( final Coordinate minimum, final Coordinate maximum ) {
         if ( minimum == null ) {
-            throw new NullPointerException( "Rectangle(minimum) must be non-null" );
+            throw new NullPointerException( "Rectangle(minimum) must be non-null." );
         }
         if ( maximum == null ) {
-            throw new NullPointerException( "Rectangle(maximum) must be non-null" );
+            throw new NullPointerException( "Rectangle(maximum) must be non-null." );
         }
         if ( maximum.x <= minimum.x ) {
             throw new IllegalArgumentException( "Rectangle(maximum) must be greater than the minimum in X." );
@@ -38,7 +38,6 @@ public class Rectangle implements Region {
         if ( maximum.y <= minimum.y ) {
             throw new IllegalArgumentException( "Rectangle(maximum) must be greater than the minimum in Y." );
         }
-
         this.minimum = minimum;
         this.maximum = maximum;
     }
@@ -75,6 +74,7 @@ public class Rectangle implements Region {
         if ( pos == null ) {
             throw new NullPointerException( "contains(pos) must be non-null." );
         }
+        // Check against each edge of the Rectangle.
         if ( pos.x < minimum.x ) {
             return false;
         }
@@ -101,6 +101,7 @@ public class Rectangle implements Region {
         if ( region == null ) {
             throw new NullPointerException( "containsRegion(region) must be non-null." );
         }
+        // Check the Region's bounds against each edge of the Rectangle.
         final Rectangle bounds = region.getBounds();
         if ( bounds.minimum.x < minimum.x ) {
             return false;
@@ -120,7 +121,9 @@ public class Rectangle implements Region {
     @Override
     public Iterator<Coordinate> iterator () {
         return new Iterator<Coordinate>() {
+            /** The current X coordinate of the Iterator. */
             private int x = minimum.x;
+            /** The current Y coordinate of the Iterator. */
             private int y = minimum.y;
 
             @Override
@@ -133,15 +136,15 @@ public class Rectangle implements Region {
                 if ( y >= maximum.y ) {
                     throw new NoSuchElementException();
                 }
-
+                // Create a Coordinate for the position.
                 final Coordinate pos = new Coordinate( x, y );
-
+                // Update the X and Y values for the next position.
                 x++;
                 if ( x >= maximum.x ) {
                     y++;
                     x = minimum.x;
                 }
-
+                // Return the position.
                 return pos;
             }
         };
@@ -159,7 +162,7 @@ public class Rectangle implements Region {
             return false;
         }
         final Rectangle rect = (Rectangle) obj;
-
+        // Check equality by comparing the minimum and maximum Coordinates.
         return maximum.equals( rect.maximum ) && minimum.equals( rect.minimum );
     }
 

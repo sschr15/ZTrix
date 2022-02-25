@@ -3,7 +3,7 @@ package electra.ztrix.model.game.common;
 import java.util.Objects;
 
 /**
- * An immutable object that represents positions, vectors, or sizes.
+ * An immutable object that can represent 2D positions, vectors, or sizes.
  *
  * @author Electra
  */
@@ -41,7 +41,7 @@ public class Coordinate {
             return false;
         }
         final Coordinate coord = (Coordinate) obj;
-
+        // Check equality by comparing the X and Y components.
         return ( x == coord.x ) && ( y == coord.y );
     }
 

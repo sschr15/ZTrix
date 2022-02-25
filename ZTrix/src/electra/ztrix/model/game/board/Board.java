@@ -39,12 +39,12 @@ public class Board {
      */
     public Mino getMinoAt ( final Coordinate pos ) {
         if ( pos == null ) {
-            throw new NullPointerException( "getMinoAt(pos) must be non-null" );
+            throw new NullPointerException( "getMinoAt(pos) must be non-null." );
         }
         if ( !bounds.contains( pos ) ) {
-            throw new IndexOutOfBoundsException( "getMinoAt(pos) must be within the Board's bounds" );
+            throw new IndexOutOfBoundsException( "getMinoAt(pos) must be within the Board's bounds." );
         }
-
+        // Return the Mino at the position.
         return matrix[pos.y][pos.x];
     }
 
@@ -54,23 +54,23 @@ public class Board {
      *
      * @param region
      *            The Region to check, non-null.
-     * @return True if the region is empty and within the Board's bounds
+     * @return True if the region is empty and within the Board's bounds.
      */
     public boolean isRegionEmpty ( final Region region ) {
         if ( region == null ) {
-            throw new NullPointerException( "isRegionEmpty(region) must be non-null" );
+            throw new NullPointerException( "isRegionEmpty(region) must be non-null." );
         }
         if ( !bounds.containsRegion( region ) ) {
             return false;
         }
-
+        // Check for a Mino at each position.
         for ( final Coordinate pos : region ) {
             final Mino mino = matrix[pos.y][pos.x];
             if ( mino != null ) {
                 return false;
             }
         }
-
+        // If none exist, return True.
         return true;
     }
 
@@ -85,12 +85,12 @@ public class Board {
      */
     public Revertable setMinoAt ( final Coordinate pos, final Mino mino ) {
         if ( mino == null ) {
-            throw new NullPointerException( "setMinoAt(mino) must be non-null" );
+            throw new NullPointerException( "setMinoAt(mino) must be non-null." );
         }
-
+        // Save the previous Mino before writing.
         final Mino prev = getMinoAt( pos );
         matrix[pos.y][pos.x] = mino;
-
+        // Create a Revertable using the previous Mino.
         return new Revertable() {
             @Override
             public void revert () {
@@ -110,23 +110,22 @@ public class Board {
      */
     public Revertable setRegion ( final Region region, final Mino mino ) {
         if ( region == null ) {
-            throw new NullPointerException( "setRegion(region) must be non-null" );
+            throw new NullPointerException( "setRegion(region) must be non-null." );
         }
         if ( !bounds.containsRegion( region ) ) {
             throw new IndexOutOfBoundsException( "setRegion(region) must be within the Board's bounds." );
         }
         if ( mino == null ) {
-            throw new NullPointerException( "setRegion(mino) must be non-null" );
+            throw new NullPointerException( "setRegion(mino) must be non-null." );
         }
-
+        // While writing, add the previous Mino at each position to a Queue.
         final Queue<Mino> prevs = new LinkedList<Mino>();
-
         for ( final Coordinate pos : region ) {
             final Mino prev = matrix[pos.y][pos.x];
             prevs.add( prev );
             matrix[pos.y][pos.x] = mino;
         }
-
+        // Create a Revertable that empties this Queue to restore the Minos.
         return new Revertable() {
             @Override
             public void revert () {
