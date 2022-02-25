@@ -2,7 +2,6 @@ package electra.ztrix.model.game.common;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -201,12 +200,12 @@ public class TestRectangle {
      */
     @Test
     public void testRectangleEquals () {
-        assertEquals( RECTANGLE, RECTANGLE,
-                RECTANGLE + " was not equal to itself." );
-        assertNotEquals( RECTANGLE, null,
-                RECTANGLE + " was incorrectly equal to null." );
-        assertNotEquals( RECTANGLE, "Test",
-                RECTANGLE + " was incorrectly equal to a String." );
+        assertTrue( RECTANGLE.equals( RECTANGLE ),
+                RECTANGLE + ".equals(" + RECTANGLE + ") did not return True." );
+        assertFalse( RECTANGLE.equals( null ),
+                RECTANGLE + ".equals(null) did not return False." );
+        assertFalse( RECTANGLE.equals( new Object() ),
+                RECTANGLE + ".equals(Object) did not return False." );
 
         for ( int x = -10; x <= 10; x++ ) {
             for ( int y = -10; y <= 10; y++ ) {
@@ -215,14 +214,14 @@ public class TestRectangle {
                 final Rectangle rect = new Rectangle( min, max );
 
                 final Rectangle rectEq = new Rectangle( x, y, x + 5, y + 5 );
-                assertEquals( rect, rectEq,
-                        rect + " was not equal to " + rectEq + "." );
+                assertTrue( rect.equals( rectEq ),
+                        rect + ".equals(" + rectEq + ") did not return True." );
                 final Rectangle rectMin = new Rectangle( x + 1, y + 1, x + 5, y + 5 );
-                assertNotEquals( rect, rectMin,
-                        rect + " was incorrectly equal to " + rectMin + "." );
+                assertFalse( rect.equals( rectMin ),
+                        rect + ".equals(" + rectMin + ") did not return False." );
                 final Rectangle rectMax = new Rectangle( x, y, x + 6, y + 6 );
-                assertNotEquals( rect, rectMax,
-                        rect + " was incorrectly equal to " + rectMax + "." );
+                assertFalse( rect.equals( rectMax ),
+                        rect + ".equals(" + rectMax + ") did not return False." );
             }
         }
     }
@@ -233,7 +232,7 @@ public class TestRectangle {
     @Test
     public void testCoordinateHashCode () {
         assertEquals( RECTANGLE.hashCode(), RECTANGLE.hashCode(),
-                RECTANGLE + ".hashCode() was not equal to itself." );
+                RECTANGLE + ".hashCode() did not match itself." );
 
         for ( int x = -10; x <= 10; x++ ) {
             for ( int y = -10; y <= 10; y++ ) {
@@ -243,7 +242,7 @@ public class TestRectangle {
 
                 final Rectangle rectEq = new Rectangle( x, y, x + 5, y + 5 );
                 assertEquals( rect.hashCode(), rectEq.hashCode(),
-                        rect + ".hashCode() was not equal to " + rectEq + ".hashCode()." );
+                        rectEq + ".hashCode() did not match " + rect + ".hashCode()." );
             }
         }
     }
@@ -255,18 +254,18 @@ public class TestRectangle {
     public void testRectangleToString () {
         final Rectangle rect1 = new Rectangle( 0, 0, 1, 1 );
         assertEquals( "Rect[(0, 0) - (1, 1)]", rect1.toString(),
-                rect1 + ".toString() was not correct." );
+                rect1 + ".toString() was wrong." );
 
         final Rectangle rect2 = new Rectangle( -2, -3, 4, 5 );
         assertEquals( "Rect[(-2, -3) - (4, 5)]", rect2.toString(),
-                rect2 + ".toString() was not correct." );
+                rect2 + ".toString() was wrong." );
 
         final Rectangle rect3 = new Rectangle( 5, -14, 7, 8 );
         assertEquals( "Rect[(5, -14) - (7, 8)]", rect3.toString(),
-                rect3 + ".toString() was not correct." );
+                rect3 + ".toString() was wrong." );
 
         final Rectangle rect4 = new Rectangle( -69, -4, 20, -3 );
         assertEquals( "Rect[(-69, -4) - (20, -3)]", rect4.toString(),
-                rect4 + ".toString() was not correct." );
+                rect4 + ".toString() was wrong." );
     }
 }

@@ -1,7 +1,8 @@
 package electra.ztrix.model.game.common;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
@@ -34,27 +35,28 @@ public class TestCoordinate {
     @Test
     public void testCoordinateEquals () {
         final Coordinate origin = new Coordinate( 0, 0 );
-        assertEquals( origin, origin,
-                origin + " was not equal to itself." );
-        assertNotEquals( origin, null,
-                origin + " was incorrectly equal to null." );
-        assertNotEquals( origin, "Test",
-                origin + " was incorrectly equal to a String." );
-        assertEquals( origin, Coordinate.ORIGIN,
-                origin + " was not equal to " + Coordinate.ORIGIN );
+        assertTrue( origin.equals( origin ),
+                origin + ".equals(" + origin + ") did not return True." );
+        assertFalse( origin.equals( null ),
+                origin + ".equals(null) did not return False." );
+        assertFalse( origin.equals( new Object() ),
+                origin + ".equals(Object) did not return False." );
+        assertTrue( origin.equals( Coordinate.ORIGIN ),
+                origin + ".equals(" + Coordinate.ORIGIN + ") did not return True." );
 
         for ( int x = -10; x <= 10; x++ ) {
             for ( int y = -10; y <= 10; y++ ) {
                 final Coordinate coord = new Coordinate( x, y );
+
                 final Coordinate coordEq = new Coordinate( x, y );
-                assertEquals( coord, coordEq,
-                        coord + " was not equal to " + coordEq + "." );
+                assertTrue( coord.equals( coordEq ),
+                        coord + ".equals(" + coordEq + ") did not return True." );
                 final Coordinate coordX = new Coordinate( x + 1, y );
-                assertNotEquals( coord, coordX,
-                        coord + " was incorrectly equal to " + coordX + "." );
+                assertFalse( coord.equals( coordX ),
+                        coord + ".equals(" + coordX + ") did not return False." );
                 final Coordinate coordY = new Coordinate( x, y + 1 );
-                assertNotEquals( coord, coordY,
-                        coord + " was incorrectly equal to " + coordY + "." );
+                assertFalse( coord.equals( coordY ),
+                        coord + ".equals(" + coordY + ") did not return False." );
             }
         }
     }
@@ -66,16 +68,16 @@ public class TestCoordinate {
     public void testCoordinateHashCode () {
         final Coordinate origin = new Coordinate( 0, 0 );
         assertEquals( origin.hashCode(), origin.hashCode(),
-                origin + ".hashCode() was not equal to itself" );
+                origin + ".hashCode() did not match itself" );
         assertEquals( origin.hashCode(), Coordinate.ORIGIN.hashCode(),
-                origin + ".hashCode() was not equal to " + Coordinate.ORIGIN + ".hashCode()" );
+                Coordinate.ORIGIN + ".hashCode() did not match " + origin + ".hashCode()." );
 
         for ( int x = -10; x <= 10; x++ ) {
             for ( int y = -10; y <= 10; y++ ) {
                 final Coordinate coord = new Coordinate( x, y );
                 final Coordinate coordEq = new Coordinate( x, y );
                 assertEquals( coord.hashCode(), coordEq.hashCode(),
-                        coord + ".hashCode() was not equal to " + coordEq + ".hashCode()." );
+                        coordEq + ".hashCode() did not match " + coord + ".hashCode()." );
             }
         }
     }
@@ -90,18 +92,18 @@ public class TestCoordinate {
 
         final Coordinate coord1 = new Coordinate( 1, 4 );
         assertEquals( "(1, 4)", coord1.toString(),
-                coord1 + ".toString() was not correct." );
+                coord1 + ".toString() was wrong." );
 
         final Coordinate coord2 = new Coordinate( -3, 5 );
         assertEquals( "(-3, 5)", coord2.toString(),
-                coord2 + ".toString() was not correct." );
+                coord2 + ".toString() was wrong." );
 
         final Coordinate coord3 = new Coordinate( 4, -20 );
         assertEquals( "(4, -20)", coord3.toString(),
-                coord3 + ".toString() was not correct." );
+                coord3 + ".toString() was wrong." );
 
         final Coordinate coord4 = new Coordinate( -70, -3 );
         assertEquals( "(-70, -3)", coord4.toString(),
-                coord4 + ".toString() was not correct." );
+                coord4 + ".toString() was wrong." );
     }
 }
