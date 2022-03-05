@@ -1,5 +1,6 @@
 plugins {
     java
+    eclipse
 }
 
 repositories {
@@ -12,6 +13,12 @@ dependencies {
 
     // JUnit for testing
     testImplementation("org.junit.jupiter:junit-jupiter:5.7.1")
+}
+
+java {
+    // Java 17
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
 }
 
 tasks.test {
