@@ -12,9 +12,9 @@ import java.util.Objects;
  */
 public class Rectangle implements Region {
     /** The contianed Coordinate with the minimum X and Y, inclusive. */
-    public final Coordinate minimum;
+    private final Coordinate minimum;
     /** The contianed Coordinate with the maximum X and Y, exclusive. */
-    public final Coordinate maximum;
+    private final Coordinate maximum;
 
     /**
      * Creates a Rectangle with given minimum and maximum Coordinates.
@@ -25,17 +25,17 @@ public class Rectangle implements Region {
      *            The maximum Coordinate, exclusive, non-null and greater than
      *            the minimum in both X and Y.
      */
-    public Rectangle ( final Coordinate minimum, final Coordinate maximum ) {
+    public Rectangle ( Coordinate minimum, Coordinate maximum ) {
         if ( minimum == null ) {
             throw new NullPointerException( "Rectangle(minimum) must be non-null." );
         }
         if ( maximum == null ) {
             throw new NullPointerException( "Rectangle(maximum) must be non-null." );
         }
-        if ( maximum.x <= minimum.x ) {
+        if ( maximum.getX() <= minimum.getX() ) {
             throw new IllegalArgumentException( "Rectangle(maximum) must be greater than the minimum in X." );
         }
-        if ( maximum.y <= minimum.y ) {
+        if ( maximum.getY() <= minimum.getY() ) {
             throw new IllegalArgumentException( "Rectangle(maximum) must be greater than the minimum in Y." );
         }
         this.minimum = minimum;
@@ -54,8 +54,26 @@ public class Rectangle implements Region {
      * @param maxY
      *            The maximum Y value, exclusive and greater than the minimum.
      */
-    public Rectangle ( final int minX, final int minY, final int maxX, final int maxY ) {
+    public Rectangle ( int minX, int minY, int maxX, int maxY ) {
         this( new Coordinate( minX, minY ), new Coordinate( maxX, maxY ) );
+    }
+
+    /**
+     * Gets the contianed Coordinate with the minimum X and Y, inclusive.
+     *
+     * @return the minimum Coordinate, inclusive.
+     */
+    public Coordinate getMinimum () {
+        return minimum;
+    }
+
+    /**
+     * Gets the contianed Coordinate with the maximum X and Y, exclusive.
+     *
+     * @return the maximum Coordinate, exclusive.
+     */
+    public Coordinate getMaximum () {
+        return maximum;
     }
 
     @Override
@@ -70,21 +88,21 @@ public class Rectangle implements Region {
      *            The position to check, non-null.
      * @return True if the Rectangle contains the position.
      */
-    public boolean contains ( final Coordinate pos ) {
+    public boolean contains ( Coordinate pos ) {
         if ( pos == null ) {
             throw new NullPointerException( "contains(pos) must be non-null." );
         }
         // Check against each edge of the Rectangle.
-        if ( pos.x < minimum.x ) {
+        if ( pos.getX() < minimum.getX() ) {
             return false;
         }
-        if ( pos.y < minimum.y ) {
+        if ( pos.getY() < minimum.getY() ) {
             return false;
         }
-        if ( pos.x >= maximum.x ) {
+        if ( pos.getX() >= maximum.getX() ) {
             return false;
         }
-        if ( pos.y >= maximum.y ) {
+        if ( pos.getY() >= maximum.getY() ) {
             return false;
         }
         return true;
@@ -97,22 +115,22 @@ public class Rectangle implements Region {
      *            The Region to check, non-null.
      * @return True if the Rectangle contains the Region.
      */
-    public boolean containsRegion ( final Region region ) {
+    public boolean containsRegion ( Region region ) {
         if ( region == null ) {
             throw new NullPointerException( "containsRegion(region) must be non-null." );
         }
         // Check the Region's bounds against each edge of the Rectangle.
-        final Rectangle bounds = region.getBounds();
-        if ( bounds.minimum.x < minimum.x ) {
+        Rectangle bounds = region.getBounds();
+        if ( bounds.minimum.getX() < minimum.getX() ) {
             return false;
         }
-        if ( bounds.minimum.y < minimum.y ) {
+        if ( bounds.minimum.getY() < minimum.getY() ) {
             return false;
         }
-        if ( bounds.maximum.x > maximum.x ) {
+        if ( bounds.maximum.getX() > maximum.getX() ) {
             return false;
         }
-        if ( bounds.maximum.y > maximum.y ) {
+        if ( bounds.maximum.getY() > maximum.getY() ) {
             return false;
         }
         return true;
@@ -122,27 +140,27 @@ public class Rectangle implements Region {
     public Iterator<Coordinate> iterator () {
         return new Iterator<Coordinate>() {
             /** The current X coordinate of the Iterator. */
-            private int x = minimum.x;
+            private int x = minimum.getX();
             /** The current Y coordinate of the Iterator. */
-            private int y = minimum.y;
+            private int y = minimum.getY();
 
             @Override
-            public final boolean hasNext () {
-                return y < maximum.y;
+            public boolean hasNext () {
+                return y < maximum.getY();
             }
 
             @Override
-            public final Coordinate next () {
-                if ( y >= maximum.y ) {
+            public Coordinate next () {
+                if ( y >= maximum.getY() ) {
                     throw new NoSuchElementException();
                 }
                 // Create a Coordinate for the position.
-                final Coordinate pos = new Coordinate( x, y );
+                Coordinate pos = new Coordinate( x, y );
                 // Update the X and Y values for the next position.
                 x++;
-                if ( x >= maximum.x ) {
+                if ( x >= maximum.getX() ) {
                     y++;
-                    x = minimum.x;
+                    x = minimum.getX();
                 }
                 // Return the position.
                 return pos;
@@ -151,7 +169,7 @@ public class Rectangle implements Region {
     }
 
     @Override
-    public boolean equals ( final Object obj ) {
+    public boolean equals ( Object obj ) {
         if ( this == obj ) {
             return true;
         }
@@ -161,7 +179,7 @@ public class Rectangle implements Region {
         if ( getClass() != obj.getClass() ) {
             return false;
         }
-        final Rectangle rect = (Rectangle) obj;
+        Rectangle rect = (Rectangle) obj;
         // Check equality by comparing the minimum and maximum Coordinates.
         return maximum.equals( rect.maximum ) && minimum.equals( rect.minimum );
     }

@@ -9,12 +9,12 @@ import java.util.Objects;
  */
 public class Coordinate {
     /** The 0, 0 Coordinate. */
-    public static final Coordinate ORIGIN = new Coordinate( 0, 0 );
+    public static Coordinate ORIGIN = new Coordinate( 0, 0 );
 
     /** The X component. */
-    public final int               x;
+    private final int        x;
     /** The Y component. */
-    public final int               y;
+    private final int        y;
 
     /**
      * Creates a new Coordinate from its X and Y components.
@@ -24,13 +24,56 @@ public class Coordinate {
      * @param y
      *            The Y component.
      */
-    public Coordinate ( final int x, final int y ) {
+    public Coordinate ( int x, int y ) {
         this.x = x;
         this.y = y;
     }
 
+    /**
+     * Gets the X component.
+     *
+     * @return the X component.
+     */
+    public int getX () {
+        return x;
+    }
+
+    /**
+     * Gets the Y component.
+     *
+     * @return the Y component.
+     */
+    public int getY () {
+        return y;
+    }
+
+    public Coordinate plus ( Coordinate offset ) {
+        int newX = x + offset.x;
+        int newY = y + offset.y;
+        return new Coordinate( newX, newY );
+    }
+
+    public Coordinate minus ( Coordinate offset ) {
+        int newX = x - offset.x;
+        int newY = y - offset.y;
+        return new Coordinate( newX, newY );
+    }
+
+    public Coordinate rotate ( Rotation rot, Coordinate center ) {
+        int relX = x - center.x;
+        int relY = y - center.y;
+        for ( int i = 0; i < rot.ordinal(); i++ ) {
+            int temp = relX;
+            relX = relY;
+            relY = -temp;
+        }
+        int newX = relX + center.x;
+        int newY = relY + center.y;
+        return new Coordinate( newX, newY );
+    }
+
     @Override
-    public boolean equals ( final Object obj ) {
+    public boolean equals ( Object obj ) {
         if ( this == obj ) {
             return true;
         }
@@ -40,7 +83,7 @@ public class Coordinate {
         if ( getClass() != obj.getClass() ) {
             return false;
         }
-        final Coordinate coord = (Coordinate) obj;
+        Coordinate coord = (Coordinate) obj;
         // Check equality by comparing the X and Y components.
         return ( x == coord.x ) && ( y == coord.y );
     }
