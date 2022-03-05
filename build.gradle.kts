@@ -21,6 +21,20 @@ java {
     targetCompatibility = JavaVersion.VERSION_17
 }
 
+var passingTests = 0
+
 tasks.test {
     useJUnitPlatform()
+
+    doFirst {
+        passingTests = 0
+    }
+
+    afterTest(closureOf<TestDescriptor> {
+        passingTests++ // this doesn't run if the test fails
+    })
+
+    doLast {
+        println("Passing tests: $passingTests")
+    }
 }
