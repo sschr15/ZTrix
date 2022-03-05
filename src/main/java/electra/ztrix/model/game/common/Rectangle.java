@@ -81,28 +81,56 @@ public class Rectangle implements Region {
         return this;
     }
 
+    @Override
+    public Rectangle translate ( Coordinate offset ) {
+        if ( offset == null ) {
+            throw new NullPointerException( "translate(offset) must be non-null." );
+        }
+        Coordinate newMinimum = minimum.plus( offset );
+        Coordinate newMaximum = maximum.plus( offset );
+        return new Rectangle( newMinimum, newMaximum );
+    }
+
+    @Override
+    public Rectangle rotate ( Rotation direction, Coordinate center ) {
+        if ( direction == null ) {
+            throw new NullPointerException( "rotate(direction) must be non-null." );
+        }
+        if ( center == null ) {
+            throw new NullPointerException( "rotate(center) must be non-null." );
+        }
+        Coordinate rotatedMinimum = minimum.rotate( direction, center );
+        Coordinate rotatedMaximum = maximum.rotate( direction, center );
+        // Rotation does not preserve corners, so fix with min() and max().
+        int minX = Math.min( rotatedMinimum.getX(), rotatedMaximum.getX() );
+        int minY = Math.min( rotatedMinimum.getY(), rotatedMaximum.getY() );
+        int maxX = Math.max( rotatedMinimum.getX(), rotatedMaximum.getX() );
+        int maxY = Math.max( rotatedMinimum.getY(), rotatedMaximum.getY() );
+        return new Rectangle( minX, minY, maxX, maxY );
+    }
+
     /**
      * Checks whether the Rectangle contains a position.
      *
-     * @param pos
+     * @param position
      *            The position to check, non-null.
      * @return True if the Rectangle contains the position.
      */
-    public boolean contains ( Coordinate pos ) {
-        if ( pos == null ) {
-            throw new NullPointerException( "contains(pos) must be non-null." );
+    public boolean contains ( Coordinate position ) {
+        if ( position == null ) {
+            throw new NullPointerException( "contains(position) must be non-null." );
         }
         // Check against each edge of the Rectangle.
-        if ( pos.getX() < minimum.getX() ) {
+        if ( position.getX() < minimum.getX() ) {
             return false;
         }
-        if ( pos.getY() < minimum.getY() ) {
+        if ( position.getY() < minimum.getY() ) {
             return false;
         }
-        if ( pos.getX() >= maximum.getX() ) {
+        if ( position.getX() >= maximum.getX() ) {
             return false;
         }
-        if ( pos.getY() >= maximum.getY() ) {
+        if ( position.getY() >= maximum.getY() ) {
             return false;
         }
         return true;

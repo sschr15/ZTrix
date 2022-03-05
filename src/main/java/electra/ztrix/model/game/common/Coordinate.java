@@ -12,9 +12,9 @@ public class Coordinate {
     public static Coordinate ORIGIN = new Coordinate( 0, 0 );
 
     /** The X component. */
-    private final int        x;
+    private final int x;
     /** The Y component. */
-    private final int        y;
+    private final int y;
 
     /**
      * Creates a new Coordinate from its X and Y components.
@@ -47,26 +47,65 @@ public class Coordinate {
         return y;
     }
 
+    /**
+     * Creates a new Coordinate by adding an offset to this one.
+     *
+     * @param offset
+     *            The Coordinate to add, non-null.
+     * @return The new Coordinate.
+     */
     public Coordinate plus ( Coordinate offset ) {
+        if ( offset == null ) {
+            throw new NullPointerException( "plus(offset) must be non-null." );
+        }
         int newX = x + offset.x;
         int newY = y + offset.y;
         return new Coordinate( newX, newY );
     }
 
+    /**
+     * Creates a new Coordinate by subtracting an offset from this one.
+     *
+     * @param offset
+     *            The Coordinate to subtract, non-null.
+     * @return The new Coordinate.
+     */
     public Coordinate minus ( Coordinate offset ) {
+        if ( offset == null ) {
+            throw new NullPointerException( "minus(offset) must be non-null." );
+        }
         int newX = x - offset.x;
         int newY = y - offset.y;
         return new Coordinate( newX, newY );
     }
 
-    public Coordinate rotate ( Rotation rot, Coordinate center ) {
+    /**
+     * Creates a new Coordinate by rotating this one.
+     *
+     * @param direction
+     *            The direction to rotate, non-null.
+     * @param center
+     *            The position to rotate around, non-null.
+     *
+     * @return The new, rotated Coordinate.
+     */
+    public Coordinate rotate ( Rotation direction, Coordinate center ) {
+        if ( direction == null ) {
+            throw new NullPointerException( "rotate(direction) must be non-null." );
+        }
+        if ( center == null ) {
+            throw new NullPointerException( "rotate(center) must be non-null." );
+        }
+        // Calculate the relative offset from the center.
         int relX = x - center.x;
         int relY = y - center.y;
-        for ( int i = 0; i < rot.ordinal(); i++ ) {
+        // Rotate the relative offset for each 90 degree rotation.
+        for ( int i = 0; i < direction.ordinal(); i++ ) {
             int temp = relX;
             relX = relY;
             relY = -temp;
         }
+        // Calculate the new absolute Coordinate from the relative offset.
         int newX = relX + center.x;
         int newY = relY + center.y;
         return new Coordinate( newX, newY );
