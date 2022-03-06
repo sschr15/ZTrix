@@ -58,6 +58,7 @@ public class Coordinate {
         if ( offset == null ) {
             throw new NullPointerException( "plus(offset) must be non-null." );
         }
+        // Calculate the new Coordinate.
         int newX = x + offset.x;
         int newY = y + offset.y;
         return new Coordinate( newX, newY );
@@ -74,9 +75,19 @@ public class Coordinate {
         if ( offset == null ) {
             throw new NullPointerException( "minus(offset) must be non-null." );
         }
+        // Calculate the new Coordinate.
         int newX = x - offset.x;
         int newY = y - offset.y;
         return new Coordinate( newX, newY );
+    }
+
+    /**
+     * Creates a new Coordinate by negating this one.
+     *
+     * @return The new, negated Coordinate.
+     */
+    public Coordinate negate () {
+        return ORIGIN.minus( this );
     }
 
     /**

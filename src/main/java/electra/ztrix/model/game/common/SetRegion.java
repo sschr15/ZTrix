@@ -15,6 +15,13 @@ public class SetRegion implements Region {
     /** The Rectangle bounding box of the Region. */
     private final Rectangle bounds;
 
+    /**
+     * Generates the Rectangle bounding box of the Region from its positions.
+     *
+     * @param positions
+     *            The positions contained in the Region.
+     * @return The Rectangle bounding box of the Region.
+     */
     private Rectangle generateBounds ( Iterable<Coordinate> positions ) {
         // Keep track of the bounds seen so far.
         int minX = Integer.MAX_VALUE;

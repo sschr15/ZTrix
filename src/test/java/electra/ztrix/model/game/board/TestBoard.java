@@ -144,10 +144,10 @@ class TestBoard {
     @Test
     public void testBoardInitialization () {
         // Check that various positions on the Board are initialized to null.
-        for ( Coordinate pos : VALID_POSITIONS ) {
-            Mino mino = board.getMinoAt( pos );
+        for ( Coordinate position : VALID_POSITIONS ) {
+            Mino mino = board.getMinoAt( position );
             assertNull( mino,
-                    "getMinoAt(" + pos + ") did not initialize to null." );
+                    "getMinoAt(" + position + ") did not initialize to null." );
         }
     }
 
@@ -161,10 +161,10 @@ class TestBoard {
                 () -> board.getMinoAt( null ),
                 "getMinoAt(null) did not throw an Exception." );
         // Check IndexOutOfBoundsExceptions for various invalid positions.
-        for ( Coordinate pos : INVALID_POSITIONS ) {
+        for ( Coordinate position : INVALID_POSITIONS ) {
             assertThrows( IndexOutOfBoundsException.class,
-                    () -> board.getMinoAt( pos ),
-                    "getMinoAt(" + pos + ") did not throw an Exception." );
+                    () -> board.getMinoAt( position ),
+                    "getMinoAt(" + position + ") did not throw an Exception." );
         }
     }
 
@@ -186,8 +186,8 @@ class TestBoard {
                     "isRegionEmpty(" + region + ") did not return True." );
         }
         // Set Minos at positions contained within the tested Regions.
-        for ( Coordinate pos : VALID_POSITIONS ) {
-            board.setMinoAt( pos, MINO );
+        for ( Coordinate position : VALID_POSITIONS ) {
+            board.setMinoAt( position, MINO );
         }
         // Check isRegionEmpty() for various Regions inside the Board.
         for ( Region region : VALID_REGIONS ) {
@@ -213,17 +213,17 @@ class TestBoard {
     @Test
     public void testBoardSetMinoAt () {
         // Check setMinoAt() for various positions inside the Board.
-        for ( Coordinate pos : VALID_POSITIONS ) {
-            Revertable revertable = board.setMinoAt( pos, MINO );
-            Mino mino = board.getMinoAt( pos );
+        for ( Coordinate position : VALID_POSITIONS ) {
+            Revertable revertable = board.setMinoAt( position, MINO );
+            Mino mino = board.getMinoAt( position );
             assertEquals( MINO, mino,
-                    "setMinoAt(" + pos + ", MINO) did not set the position." );
+                    "setMinoAt(" + position + ", MINO) did not set the position." );
             Mino other = board.getMinoAt( OTHER_POSITION );
             assertNull( other,
-                    "setMinoAt(" + pos + ", MINO) affected another position." );
+                    "setMinoAt(" + position + ", MINO) affected another position." );
             // Check that the method is Revertable.
             revertable.revert();
-            Mino reverted = board.getMinoAt( pos );
+            Mino reverted = board.getMinoAt( position );
             assertNull( reverted,
                     "setMinoAt().revert() did not revert the position." );
         }
@@ -242,10 +242,10 @@ class TestBoard {
                 () -> board.setMinoAt( OTHER_POSITION, null ),
                 "setMinoAt(" + OTHER_POSITION + ", null) did not throw an Exception." );
         // Check IndexOutOfBoundsExceptions for various invalid Positions.
-        for ( Coordinate pos : INVALID_POSITIONS ) {
+        for ( Coordinate position : INVALID_POSITIONS ) {
             assertThrows( IndexOutOfBoundsException.class,
-                    () -> board.setMinoAt( pos, MINO ),
-                    "setMinoAt(" + pos + ", MINO) did not throw an Exception." );
+                    () -> board.setMinoAt( position, MINO ),
+                    "setMinoAt(" + position + ", MINO) did not throw an Exception." );
         }
     }
 
@@ -257,20 +257,20 @@ class TestBoard {
         // Check setRegion() for various Regions inside the Board.
         for ( Region region : VALID_REGIONS ) {
             Revertable revertable = board.setRegion( region, MINO );
-            for ( Coordinate pos : region ) {
-                Mino mino = board.getMinoAt( pos );
+            for ( Coordinate position : region ) {
+                Mino mino = board.getMinoAt( position );
                 assertEquals( MINO, mino,
-                        "setRegion(" + region + ", MINO) did not set the position " + pos + "." );
+                        "setRegion(" + region + ", MINO) did not set the position " + position + "." );
             }
             Mino other = board.getMinoAt( OTHER_POSITION );
             assertNull( other,
                     "setRegion(" + region + ", MINO) affected another position." );
             // Check that the method is Revertable.
             revertable.revert();
-            for ( Coordinate pos : region ) {
-                Mino reverted = board.getMinoAt( pos );
+            for ( Coordinate position : region ) {
+                Mino reverted = board.getMinoAt( position );
                 assertNull( reverted,
-                        "setMinoAt().revert() did not revert the position " + pos + "." );
+                        "setMinoAt().revert() did not revert the position " + position + "." );
             }
         }
     }

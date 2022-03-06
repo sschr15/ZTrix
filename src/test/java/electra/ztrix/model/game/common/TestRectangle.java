@@ -111,14 +111,14 @@ public class TestRectangle {
     @Test
     public void testRectangleContains () {
         // Check various positions inside the Rectangle.
-        for ( Coordinate pos : VALID_POSITIONS ) {
-            assertTrue( RECTANGLE.contains( pos ),
-                    "contains(" + pos + ") did not return True." );
+        for ( Coordinate position : VALID_POSITIONS ) {
+            assertTrue( RECTANGLE.contains( position ),
+                    "contains(" + position + ") did not return True." );
         }
         // Check various positions outside the Rectangle.
-        for ( Coordinate pos : INVALID_POSITIONS ) {
-            assertFalse( RECTANGLE.contains( pos ),
-                    "contains(" + pos + ") did not return False." );
+        for ( Coordinate position : INVALID_POSITIONS ) {
+            assertFalse( RECTANGLE.contains( position ),
+                    "contains(" + position + ") did not return False." );
         }
     }
 
@@ -142,10 +142,10 @@ public class TestRectangle {
         assertTrue( RECTANGLE.containsRegion( RECTANGLE ),
                 "contains(" + RECTANGLE + ") did not return True." );
         // Check various 1x1 Rectangles at positions inside the Rectangle.
-        for ( Coordinate min : VALID_POSITIONS ) {
+        for ( Coordinate minimum : VALID_POSITIONS ) {
             Coordinate size = new Coordinate( 1, 1 );
-            Coordinate max = min.plus( size );
-            Region region = new Rectangle( min, max );
+            Coordinate maximum = minimum.plus( size );
+            Region region = new Rectangle( minimum, maximum );
             assertTrue( RECTANGLE.containsRegion( region ),
                     "containsRegion(" + region + ") did not return True." );
         }
@@ -175,11 +175,11 @@ public class TestRectangle {
         // Create an Iterator.
         Iterator<Coordinate> iter = RECTANGLE.iterator();
         // Check that the Iterator produces the correct positions.
-        for ( Coordinate pos : VALID_POSITIONS ) {
+        for ( Coordinate position : VALID_POSITIONS ) {
             assertTrue( iter.hasNext(),
                     "iterator().hasNext() did not return True." );
-            assertEquals( pos, iter.next(),
-                    "iterator().next() did not return the correct position" + pos + "." );
+            assertEquals( position, iter.next(),
+                    "iterator().next() did not return the correct position" + position + "." );
         }
         // Check that the Iterator is out of positions.
         assertFalse( iter.hasNext(),
@@ -204,9 +204,9 @@ public class TestRectangle {
         // Create Rectangles with various positions.
         for ( int x = -10; x <= 10; x++ ) {
             for ( int y = -10; y <= 10; y++ ) {
-                Coordinate min = new Coordinate( x, y );
-                Coordinate max = new Coordinate( x + 5, y + 5 );
-                Rectangle rect = new Rectangle( min, max );
+                Coordinate minimum = new Coordinate( x, y );
+                Coordinate maximum = new Coordinate( x + 5, y + 5 );
+                Rectangle rect = new Rectangle( minimum, maximum );
                 // Check the equality of the Rectangle against other Rectangles.
                 Rectangle rectEq = new Rectangle( x, y, x + 5, y + 5 );
                 assertTrue( rect.equals( rectEq ),
@@ -232,9 +232,9 @@ public class TestRectangle {
         // Check the hashCode() of Rectangles with various positions.
         for ( int x = -10; x <= 10; x++ ) {
             for ( int y = -10; y <= 10; y++ ) {
-                Coordinate min = new Coordinate( x, y );
-                Coordinate max = new Coordinate( x + 5, y + 5 );
-                Rectangle rect = new Rectangle( min, max );
+                Coordinate minimum = new Coordinate( x, y );
+                Coordinate maximum = new Coordinate( x + 5, y + 5 );
+                Rectangle rect = new Rectangle( minimum, maximum );
                 Rectangle rectEq = new Rectangle( x, y, x + 5, y + 5 );
                 assertEquals( rect.hashCode(), rectEq.hashCode(),
                         rectEq + ".hashCode() did not match " + rect + ".hashCode()." );

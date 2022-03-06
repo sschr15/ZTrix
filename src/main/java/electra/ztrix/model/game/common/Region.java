@@ -13,7 +13,7 @@ public interface Region extends Iterable<Coordinate> {
     /**
      * Gets the Rectangle bounding box of the Region.
      *
-     * @return the smallest Rectangle fully containing the Region.
+     * @return the bounds.
      */
     public Rectangle getBounds ();
 
@@ -28,6 +28,7 @@ public interface Region extends Iterable<Coordinate> {
         if ( offset == null ) {
             throw new NullPointerException( "translate(offset) must be non-null." );
         }
+        // Translate each position individually, adding to a SetRegion.
         List<Coordinate> positions = new ArrayList<>();
         for ( Coordinate position : this ) {
             Coordinate newPos = position.plus( offset );
@@ -53,6 +54,7 @@ public interface Region extends Iterable<Coordinate> {
         if ( center == null ) {
             throw new NullPointerException( "rotate(center) must be non-null." );
         }
+        // Rotate each position individually, adding to a SetRegion.
         List<Coordinate> positions = new ArrayList<>();
         for ( Coordinate position : this ) {
             Coordinate newPos = position.rotate( direction, center );

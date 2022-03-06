@@ -61,7 +61,7 @@ public class Rectangle implements Region {
     /**
      * Gets the contianed Coordinate with the minimum X and Y, inclusive.
      *
-     * @return the minimum Coordinate, inclusive.
+     * @return the minimum Coordinate.
      */
     public Coordinate getMinimum () {
         return minimum;
@@ -70,7 +70,7 @@ public class Rectangle implements Region {
     /**
      * Gets the contianed Coordinate with the maximum X and Y, exclusive.
      *
-     * @return the maximum Coordinate, exclusive.
+     * @return the maximum Coordinate.
      */
     public Coordinate getMaximum () {
         return maximum;
@@ -86,6 +86,7 @@ public class Rectangle implements Region {
         if ( offset == null ) {
             throw new NullPointerException( "translate(offset) must be non-null." );
         }
+        // Translate the corners of the Rectangle.
         Coordinate newMinimum = minimum.plus( offset );
         Coordinate newMaximum = maximum.plus( offset );
         return new Rectangle( newMinimum, newMaximum );
@@ -99,6 +100,7 @@ public class Rectangle implements Region {
         if ( center == null ) {
             throw new NullPointerException( "rotate(center) must be non-null." );
         }
+        // Rotate the corners of the Rectangle.
         Coordinate rotatedMinimum = minimum.rotate( direction, center );
         Coordinate rotatedMaximum = maximum.rotate( direction, center );
         // Rotation does not preserve corners, so fix with min() and max().

@@ -17,7 +17,7 @@ public class Board {
     /** The Rectangle bounding box of the Board. */
     private final Rectangle bounds;
     /** The matrix storing the grid of Minos. */
-    private final Mino[][]  matrix;
+    private final Mino[][] matrix;
 
     /**
      * Creates a new Board with a given size.
@@ -33,7 +33,7 @@ public class Board {
     /**
      * Gets the rectangle bounding box of the Board.
      *
-     * @return the bounds of the Board.
+     * @return the bounds.
      */
     public Rectangle getBounds () {
         return bounds;
@@ -42,19 +42,19 @@ public class Board {
     /**
      * Gets the Mino at a particular position.
      *
-     * @param pos
+     * @param position
      *            The position, non-null and within the Board's bounds.
      * @return The Mino at the position.
      */
-    public Mino getMinoAt ( Coordinate pos ) {
-        if ( pos == null ) {
-            throw new NullPointerException( "getMinoAt(pos) must be non-null." );
+    public Mino getMinoAt ( Coordinate position ) {
+        if ( position == null ) {
+            throw new NullPointerException( "getMinoAt(position) must be non-null." );
         }
-        if ( !bounds.contains( pos ) ) {
-            throw new IndexOutOfBoundsException( "getMinoAt(pos) must be within the Board's bounds." );
+        if ( !bounds.contains( position ) ) {
+            throw new IndexOutOfBoundsException( "getMinoAt(position) must be within the Board's bounds." );
         }
         // Return the Mino at the position.
-        return matrix[pos.getY()][pos.getX()];
+        return matrix[position.getY()][position.getX()];
     }
 
     /**
@@ -73,8 +73,8 @@ public class Board {
             return false;
         }
         // Check for a Mino at each position.
-        for ( Coordinate pos : region ) {
-            Mino mino = matrix[pos.getY()][pos.getX()];
+        for ( Coordinate position : region ) {
+            Mino mino = matrix[position.getY()][position.getX()];
             if ( mino != null ) {
                 return false;
             }
@@ -86,24 +86,24 @@ public class Board {
     /**
      * Sets the Mino at a particular position, revertably.
      *
-     * @param pos
+     * @param position
      *            The position, non-null and within the Board's bounds.
      * @param mino
      *            The Mino to set, non-null.
-     * @return The Revertable used to revert this method.
+     * @return A Revertable to revert this method.
      */
-    public Revertable setMinoAt ( Coordinate pos, Mino mino ) {
+    public Revertable setMinoAt ( Coordinate position, Mino mino ) {
         if ( mino == null ) {
             throw new NullPointerException( "setMinoAt(mino) must be non-null." );
         }
         // Save the previous Mino before writing.
-        Mino prev = getMinoAt( pos );
-        matrix[pos.getY()][pos.getX()] = mino;
+        Mino prev = getMinoAt( position );
+        matrix[position.getY()][position.getX()] = mino;
         // Create a Revertable using the previous Mino.
         return new Revertable() {
             @Override
             public void revert () {
-                matrix[pos.getY()][pos.getX()] = prev;
+                matrix[position.getY()][position.getX()] = prev;
             }
         };
     }
@@ -115,7 +115,7 @@ public class Board {
      *            The Region to check, non-null and within the Board's bounds.
      * @param mino
      *            The Mino to set, non-null.
-     * @return The Revertable used to revert this method.
+     * @return A Revertable to revert this method.
      */
     public Revertable setRegion ( Region region, Mino mino ) {
         if ( region == null ) {
