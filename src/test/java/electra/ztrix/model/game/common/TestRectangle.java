@@ -18,7 +18,7 @@ import org.junit.jupiter.api.Test;
 public class TestRectangle {
 
     /** The Rectangle used for testing. */
-    public static Rectangle    RECTANGLE         = new Rectangle( -1, -1, 2, 2 );
+    public static Rectangle RECTANGLE = new Rectangle( -1, -1, 2, 2 );
 
     /** An Array of positions not inside the Rectangle. */
     public static Coordinate[] INVALID_POSITIONS = {
@@ -34,7 +34,7 @@ public class TestRectangle {
     };
 
     /** An Array of positions inside the Rectangle. */
-    public static Coordinate[] VALID_POSITIONS   = {
+    public static Coordinate[] VALID_POSITIONS = {
             new Coordinate( -1, -1 ),
             new Coordinate( 0, -1 ),
             new Coordinate( 1, -1 ),
@@ -47,7 +47,7 @@ public class TestRectangle {
     };
 
     /** An Array of Regions not inside the Rectangle. */
-    public static Region[]     INVALID_REGIONS   = {
+    public static Region[] INVALID_REGIONS = {
             new Rectangle( -2, -2, 1, 1 ),
             new Rectangle( -2, 0, 0, 1 ),
             new Rectangle( 0, -2, 1, 0 ),
@@ -65,20 +65,20 @@ public class TestRectangle {
         // Check NullPointerExceptions.
         assertThrows( NullPointerException.class,
                 () -> new Rectangle( null, Coordinate.ORIGIN ),
-                "Rectangle(null, " + Coordinate.ORIGIN + ") did not throw an Exception." );
+                "Rectangle(null, ORIGIN) did not throw an Exception." );
         assertThrows( NullPointerException.class,
                 () -> new Rectangle( Coordinate.ORIGIN, null ),
-                "Rectangle(" + Coordinate.ORIGIN + ", null) did not throw an Exception." );
+                "Rectangle(ORIGIN, null) did not throw an Exception." );
         // Check IllegalArgumentExceptions for various invalid sizes.
         for ( int i = -10; i <= 0; i++ ) {
             Coordinate coordX = new Coordinate( i, 1 );
             assertThrows( IllegalArgumentException.class,
                     () -> new Rectangle( Coordinate.ORIGIN, coordX ),
-                    "Rectangle(" + Coordinate.ORIGIN + ", " + coordX + ") did not throw an Exception." );
+                    "Rectangle(ORIGIN, " + coordX + ") did not throw an Exception." );
             Coordinate coordY = new Coordinate( 1, i );
             assertThrows( IllegalArgumentException.class,
                     () -> new Rectangle( Coordinate.ORIGIN, coordY ),
-                    "Rectangle(" + Coordinate.ORIGIN + ", " + coordY + ") did not throw an Exception." );
+                    "Rectangle(ORIGIN, " + coordY + ") did not throw an Exception." );
 
         }
     }
