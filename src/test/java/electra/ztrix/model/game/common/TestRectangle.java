@@ -1,20 +1,18 @@
 package electra.ztrix.model.game.common;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.Test;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Tests the Rectangle class.
  *
  * @author Electra
  */
+@SuppressWarnings({"SimplifiableAssertion", "EqualsWithItself", "ConstantConditions", "Convert2MethodRef"})
 public class TestRectangle {
 
     /** The Rectangle used for testing. */
@@ -260,5 +258,35 @@ public class TestRectangle {
         Rectangle rect4 = new Rectangle( -69, -4, 20, -3 );
         assertEquals( "Rect[(-69, -4) - (20, -3)]", rect4.toString(),
                 rect4 + ".toString() was wrong." );
+    }
+
+    /**
+     * Tests that a square Rectangle is equivalent to a subclass of Rectangle.
+     */
+    @Test
+    public void testRectangleCanBeSquare () {
+        Rectangle rect = new Rectangle( 0, 0, 1, 1 );
+
+        class Square extends Rectangle {
+            @SuppressWarnings("SuspiciousNameCombination")
+            public Square (Coordinate min, int width ) {
+                super( min, min.plus( new Coordinate( width, width ) ) );
+            }
+
+            public Square (int x, int y, int width ) {
+                this( new Coordinate( x, y ), width );
+            }
+        }
+
+        Square square = new Square( 0, 0, 1 );
+
+        assertTrue( rect.equals( square ),
+                "Rectangle.equals(Square) did not return True." );
+
+        assertTrue( square.equals( rect ),
+                "Square.equals(Rectangle) did not return True." );
+
+        assertEquals( rect.hashCode(), square.hashCode(),
+                "Rectangle.hashCode() did not match Square.hashCode()." );
     }
 }

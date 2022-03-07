@@ -1,5 +1,8 @@
 package electra.ztrix.model.game.common;
 
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Objects;
@@ -32,10 +35,10 @@ public class Rectangle implements Region {
         if ( maximum == null ) {
             throw new NullPointerException( "Rectangle(maximum) must be non-null." );
         }
-        if ( maximum.getX() <= minimum.getX() ) {
+        if ( maximum.x() <= minimum.x() ) {
             throw new IllegalArgumentException( "Rectangle(maximum) must be greater than the minimum in X." );
         }
-        if ( maximum.getY() <= minimum.getY() ) {
+        if ( maximum.y() <= minimum.y() ) {
             throw new IllegalArgumentException( "Rectangle(maximum) must be greater than the minimum in Y." );
         }
         this.minimum = minimum;
@@ -77,6 +80,7 @@ public class Rectangle implements Region {
     }
 
     @Override
+    @NotNull
     public Rectangle getBounds () {
         return this;
     }
@@ -104,10 +108,10 @@ public class Rectangle implements Region {
         Coordinate rotatedMinimum = minimum.rotate( direction, center );
         Coordinate rotatedMaximum = maximum.rotate( direction, center );
         // Rotation does not preserve corners, so fix with min() and max().
-        int minX = Math.min( rotatedMinimum.getX(), rotatedMaximum.getX() );
-        int minY = Math.min( rotatedMinimum.getY(), rotatedMaximum.getY() );
-        int maxX = Math.max( rotatedMinimum.getX(), rotatedMaximum.getX() );
-        int maxY = Math.max( rotatedMinimum.getY(), rotatedMaximum.getY() );
+        int minX = Math.min( rotatedMinimum.x(), rotatedMaximum.x() );
+        int minY = Math.min( rotatedMinimum.y(), rotatedMaximum.y() );
+        int maxX = Math.max( rotatedMinimum.x(), rotatedMaximum.x() );
+        int maxY = Math.max( rotatedMinimum.y(), rotatedMaximum.y() );
         return new Rectangle( minX, minY, maxX, maxY );
     }
 
@@ -115,82 +119,71 @@ public class Rectangle implements Region {
      * Checks whether the Rectangle contains a position.
      *
      * @param position
-     *            The position to check, non-null.
+     *            The position to check.
      * @return True if the Rectangle contains the position.
      */
+    @Contract("null -> false")
     public boolean contains ( Coordinate position ) {
         if ( position == null ) {
-            throw new NullPointerException( "contains(position) must be non-null." );
-        }
-        // Check against each edge of the Rectangle.
-        if ( position.getX() < minimum.getX() ) {
             return false;
         }
-        if ( position.getY() < minimum.getY() ) {
-            return false;
-        }
-        if ( position.getX() >= maximum.getX() ) {
-            return false;
-        }
-        if ( position.getY() >= maximum.getY() ) {
-            return false;
-        }
-        return true;
+
+        return (
+            position.x() >= minimum.x() &&
+            position.y() >= minimum.y() &&
+            position.x() < maximum.x() &&
+            position.y() < maximum.y()
+            );
     }
 
     /**
      * Checks whether the Rectangle contains a Region.
      *
      * @param region
-     *            The Region to check, non-null.
+     *            The Region to check.
      * @return True if the Rectangle contains the Region.
      */
+    @Contract("null -> false")
     public boolean containsRegion ( Region region ) {
         if ( region == null ) {
-            throw new NullPointerException( "containsRegion(region) must be non-null." );
+            return false;
         }
         // Check the Region's bounds against each edge of the Rectangle.
         Rectangle bounds = region.getBounds();
-        if ( bounds.minimum.getX() < minimum.getX() ) {
-            return false;
-        }
-        if ( bounds.minimum.getY() < minimum.getY() ) {
-            return false;
-        }
-        if ( bounds.maximum.getX() > maximum.getX() ) {
-            return false;
-        }
-        if ( bounds.maximum.getY() > maximum.getY() ) {
-            return false;
-        }
-        return true;
+
+        return (
+            bounds.minimum.x() >= minimum.x() &&
+            bounds.minimum.y() >= minimum.y() &&
+            bounds.maximum.x() <= maximum.x() &&
+            bounds.maximum.y() <= maximum.y()
+            );
     }
 
     @Override
     public Iterator<Coordinate> iterator () {
-        return new Iterator<Coordinate>() {
+        return new Iterator<>() {
             /** The current X coordinate of the Iterator. */
-            private int x = minimum.getX();
+            private int x = minimum.x();
             /** The current Y coordinate of the Iterator. */
-            private int y = minimum.getY();
+            private int y = minimum.y();
 
             @Override
             public boolean hasNext () {
-                return y < maximum.getY();
+                return y < maximum.y();
             }
 
             @Override
             public Coordinate next () {
-                if ( y >= maximum.getY() ) {
+                if ( y >= maximum.y() ) {
                     throw new NoSuchElementException();
                 }
                 // Create a Coordinate for the position.
                 Coordinate pos = new Coordinate( x, y );
                 // Update the X and Y values for the next position.
                 x++;
-                if ( x >= maximum.getX() ) {
+                if ( x >= maximum.x() ) {
                     y++;
-                    x = minimum.getX();
+                    x = minimum.x();
                 }
                 // Return the position.
                 return pos;
@@ -206,12 +199,12 @@ public class Rectangle implements Region {
         if ( obj == null ) {
             return false;
         }
-        if ( getClass() != obj.getClass() ) {
-            return false;
-        }
-        Rectangle rect = (Rectangle) obj;
-        // Check equality by comparing the minimum and maximum Coordinates.
-        return maximum.equals( rect.maximum ) && minimum.equals( rect.minimum );
+
+        return
+                // Check if it's a rectangle, and if so...
+                obj instanceof Rectangle rect &&
+                // ...check if the minimum and maximum Coordinates are equal.
+                maximum.equals( rect.maximum ) && minimum.equals( rect.minimum );
     }
 
     @Override

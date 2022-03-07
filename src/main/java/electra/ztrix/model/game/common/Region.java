@@ -1,5 +1,8 @@
 package electra.ztrix.model.game.common;
 
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,6 +18,7 @@ public interface Region extends Iterable<Coordinate> {
      *
      * @return the bounds.
      */
+    @NotNull
     public Rectangle getBounds ();
 
     /**
@@ -24,6 +28,7 @@ public interface Region extends Iterable<Coordinate> {
      *            The offset to translate by, non-null.
      * @return The new, translated Region.
      */
+    @Contract(value = "!null -> new", pure = true)
     public default Region translate ( Coordinate offset ) {
         if ( offset == null ) {
             throw new NullPointerException( "translate(offset) must be non-null." );
@@ -47,6 +52,7 @@ public interface Region extends Iterable<Coordinate> {
      *
      * @return The new, rotated Region.
      */
+    @Contract(value = "!null, !null -> new", pure = true)
     public default Region rotate ( Rotation direction, Coordinate center ) {
         if ( direction == null ) {
             throw new NullPointerException( "rotate(direction) must be non-null." );

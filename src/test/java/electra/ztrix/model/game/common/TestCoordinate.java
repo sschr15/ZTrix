@@ -1,17 +1,15 @@
 package electra.ztrix.model.game.common;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Tests the Coordinate class.
  *
  * @author Electra
  */
+@SuppressWarnings({"SimplifiableAssertion", "EqualsWithItself", "ConstantConditions"})
 public class TestCoordinate {
 
     /**
@@ -23,9 +21,9 @@ public class TestCoordinate {
         for ( int x = -10; x <= 10; x++ ) {
             for ( int y = -10; y <= 10; y++ ) {
                 Coordinate coord = new Coordinate( x, y );
-                assertEquals( x, coord.getX(),
+                assertEquals( x, coord.x(),
                         "getX() was wrong." );
-                assertEquals( y, coord.getY(),
+                assertEquals( y, coord.y(),
                         "getY() was wrong." );
             }
         }

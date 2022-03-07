@@ -27,7 +27,7 @@ public class Board {
      */
     public Board ( Coordinate size ) {
         this.bounds = new Rectangle( Coordinate.ORIGIN, size );
-        this.matrix = new Mino[size.getY()][size.getX()];
+        this.matrix = new Mino[size.y()][size.x()];
     }
 
     /**
@@ -54,7 +54,7 @@ public class Board {
             throw new IndexOutOfBoundsException( "getMinoAt(position) must be within the Board's bounds." );
         }
         // Return the Mino at the position.
-        return matrix[position.getY()][position.getX()];
+        return matrix[position.y()][position.x()];
     }
 
     /**
@@ -74,7 +74,7 @@ public class Board {
         }
         // Check for a Mino at each position.
         for ( Coordinate position : region ) {
-            Mino mino = matrix[position.getY()][position.getX()];
+            Mino mino = matrix[position.y()][position.x()];
             if ( mino != null ) {
                 return false;
             }
@@ -98,12 +98,12 @@ public class Board {
         }
         // Save the previous Mino before writing.
         Mino prev = getMinoAt( position );
-        matrix[position.getY()][position.getX()] = mino;
+        matrix[position.y()][position.x()] = mino;
         // Create a Revertable using the previous Mino.
         return new Revertable() {
             @Override
             public void revert () {
-                matrix[position.getY()][position.getX()] = prev;
+                matrix[position.y()][position.x()] = prev;
             }
         };
     }
@@ -130,9 +130,9 @@ public class Board {
         // While writing, add the previous Mino at each position to a Queue.
         Queue<Mino> prevs = new LinkedList<Mino>();
         for ( Coordinate pos : region ) {
-            Mino prev = matrix[pos.getY()][pos.getX()];
+            Mino prev = matrix[pos.y()][pos.x()];
             prevs.add( prev );
-            matrix[pos.getY()][pos.getX()] = mino;
+            matrix[pos.y()][pos.x()] = mino;
         }
         // Create a Revertable that empties this Queue to restore the Minos.
         return new Revertable() {
@@ -140,7 +140,7 @@ public class Board {
             public void revert () {
                 for ( Coordinate pos : region ) {
                     Mino prev = prevs.remove();
-                    matrix[pos.getY()][pos.getX()] = prev;
+                    matrix[pos.y()][pos.x()] = prev;
                 }
             }
         };

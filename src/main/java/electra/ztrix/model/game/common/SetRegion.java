@@ -1,5 +1,8 @@
 package electra.ztrix.model.game.common;
 
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -30,17 +33,17 @@ public class SetRegion implements Region {
         int maxY = Integer.MIN_VALUE;
         // Update the bounds for each position in the Iterable.
         for ( Coordinate position : positions ) {
-            if ( position.getX() < minX ) {
-                minX = position.getX();
+            if ( position.x() < minX ) {
+                minX = position.x();
             }
-            if ( position.getY() < minY ) {
-                minY = position.getY();
+            if ( position.y() < minY ) {
+                minY = position.y();
             }
-            if ( position.getX() > maxX ) {
-                maxX = position.getX();
+            if ( position.x() > maxX ) {
+                maxX = position.x();
             }
-            if ( position.getY() > maxY ) {
-                maxY = position.getY();
+            if ( position.y() > maxY ) {
+                maxY = position.y();
             }
         }
         return new Rectangle( minX, minY, maxX, maxY );
@@ -52,6 +55,7 @@ public class SetRegion implements Region {
      * @param positions
      *            The positions contained in the Region, non-null and non-empty.
      */
+    @Contract(value = "null -> fail", pure = true)
     public SetRegion ( Iterable<Coordinate> positions ) {
         if ( positions == null ) {
             throw new NullPointerException( "SetRegion(positions) must be non-null." );
@@ -74,7 +78,7 @@ public class SetRegion implements Region {
     }
 
     @Override
-    public Rectangle getBounds () {
+    public @NotNull Rectangle getBounds () {
         return bounds;
     }
 
