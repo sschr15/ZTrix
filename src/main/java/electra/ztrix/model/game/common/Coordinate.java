@@ -54,6 +54,7 @@ public record Coordinate(int x, int y) {
      *
      * @return The new, negated Coordinate.
      */
+    @Contract(value = "-> new", pure = true)
     public Coordinate negate () {
         return ORIGIN.minus( this );
     }
